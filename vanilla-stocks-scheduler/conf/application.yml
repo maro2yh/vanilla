@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: local
+
+log:
+  path:
+  file-name: vanilla-scheduler
+  file-extention: log
+  level: debug
+  max-history: 30
+  max-size: 300MB
+  show-sql: true
+
+datasource:
+  host: localhost
+  port: 3306
+  username: root
+  password: Dydgus070^
