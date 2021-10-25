@@ -29,8 +29,8 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = { "vanilla.stocks.scheduler.db" }, transactionManagerRef = "transactionManager", entityManagerFactoryRef = "entityManagerFactory")
-@MapperScan(basePackages = { "vanilla.stocks.scheduler.db" })
+@EnableJpaRepositories(basePackages = { "vanilla.stocks.scheduler" }, transactionManagerRef = "transactionManager", entityManagerFactoryRef = "entityManagerFactory")
+@MapperScan(basePackages = { "vanilla.stocks.scheduler" })
 public class DataSourceConfig {
 
     @Autowired
@@ -53,7 +53,7 @@ public class DataSourceConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("dataSource") DataSource dataSource) {
         final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
-        entityManagerFactoryBean.setPackagesToScan(new String[] { "vanilla.stocks.scheduler.db" });
+        entityManagerFactoryBean.setPackagesToScan(new String[] { "vanilla.stocks.scheduler" });
 
         final Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
@@ -88,7 +88,7 @@ public class DataSourceConfig {
         factoryBean.setDataSource(dataSource);
         factoryBean.setTypeAliasesPackage("vanilla.stocks.scheduler.db");
         factoryBean.setConfigLocation(applicationContext.getResource("classpath:mybatis-config.xml"));
-        factoryBean.setMapperLocations(applicationContext.getResources("classpath:vanilla/stocks/scheduler/db/**/**SqlMapper.xml"));
+        factoryBean.setMapperLocations(applicationContext.getResources("classpath:vanilla/stocks/scheduler/**/**SqlMapper.xml"));
         factoryBean.setVfs(SpringBootVFS.class);
         return factoryBean;
     }
