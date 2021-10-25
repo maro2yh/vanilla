@@ -5,12 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>vanilla.stocks</groupId>
     <artifactId>vanilla-stocks-html-parser</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>증권 포탈 사이트의 HTML 파서 어플리케이션</name>
 
     <properties>
-        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <commons.lang3.version>3.11</commons.lang3.version>
         <commons.io.version>2.6</commons.io.version>
         <lombok.version>1.18.18</lombok.version>
