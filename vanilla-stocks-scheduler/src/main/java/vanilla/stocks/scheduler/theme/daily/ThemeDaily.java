@@ -1,5 +1,7 @@
 package vanilla.stocks.scheduler.theme.daily;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,7 +13,7 @@ import org.apache.ibatis.type.Alias;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import vanilla.stocks.scheduler.theme.status.ThemeStatus;
+import vanilla.commons.util.string.VanillaStringUtils;
 
 @Data
 @AllArgsConstructor
@@ -39,10 +41,10 @@ public class ThemeDaily {
     public ThemeDaily() {
     }
     
-    public ThemeDaily(String date, ThemeStatus themeStatus) {
+    public ThemeDaily(String date, Map<String, Object> map) {
         this.date = date;
-        this.no = themeStatus.getNo();
-        this.name = themeStatus.getName();
-        this.changeRate = themeStatus.getChangeRate();
+        this.no = String.valueOf(map.get("no"));
+        this.name = String.valueOf(map.get("name"));
+        this.changeRate = VanillaStringUtils.toFloat(String.valueOf(map.get("changeRate")));
     }
 }

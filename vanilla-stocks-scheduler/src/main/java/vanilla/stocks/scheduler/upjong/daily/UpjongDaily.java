@@ -1,5 +1,7 @@
 package vanilla.stocks.scheduler.upjong.daily;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,7 +13,7 @@ import org.apache.ibatis.type.Alias;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import vanilla.stocks.scheduler.upjong.status.UpjongStatus;
+import vanilla.commons.util.string.VanillaStringUtils;
 
 @Data
 @AllArgsConstructor
@@ -39,10 +41,10 @@ public class UpjongDaily {
     public UpjongDaily() {
     }
     
-    public UpjongDaily(String date, UpjongStatus upjongStatus) {
+    public UpjongDaily(String date, Map<String, Object> map) {
         this.date = date;
-        this.no = upjongStatus.getNo();
-        this.name = upjongStatus.getName();
-        this.changeRate = upjongStatus.getChangeRate();
+        this.no = String.valueOf(map.get("no"));
+        this.name = String.valueOf(map.get("name"));
+        this.changeRate = VanillaStringUtils.toFloat(String.valueOf(map.get("changeRate")));
     }
 }
