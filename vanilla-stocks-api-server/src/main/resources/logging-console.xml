@@ -19,7 +19,6 @@
         <appender-ref ref="console" />
     </logger>
     
-    <logger name="vanilla.stocks.api.server.db.h2.sqlmapper" level="OFF"/>
     <logger name="jdbc" level="OFF"/>
     <logger name="jdbc.connection" level="OFF"/>
     <logger name="jdbc.audit" level="OFF"/>

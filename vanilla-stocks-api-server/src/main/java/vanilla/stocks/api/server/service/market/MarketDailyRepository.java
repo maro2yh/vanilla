@@ -1,4 +1,4 @@
-package vanilla.stocks.api.server.db.h2.market;
+package vanilla.stocks.api.server.service.market;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

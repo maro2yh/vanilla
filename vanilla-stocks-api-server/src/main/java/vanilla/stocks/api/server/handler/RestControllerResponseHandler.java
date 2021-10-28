@@ -17,6 +17,11 @@ public class RestControllerResponseHandler {
     @Around("GetMapping()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = joinPoint.proceed();
+        
+        if (result == null) {
+            result = new Object();
+        }
+        
         return new RestControllerResponseBody(result);
     }
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="vanilla.stocks.api.server.service.market.MarketDailySqlMapper">
+
+    <select id="count" parameterType="map" resultType="int">
+        /* MarketDailySqlMapper.count */
+        SELECT  COUNT(*)
+        FROM    market_daily
+        WHERE   LOWER(name) = LOWER(#{where.data.name})
+        <if test="@vanilla.commons.util.mybatis.MybatisFunctions@isNotEmpty(where)">
+            <if test="@vanilla.commons.util.mybatis.MybatisFunctions@isNotEmpty(where.data.searchFromDate)">
+                AND date <![CDATA[ >= ]]> #{where.data.searchFromDate}
+            </if>
+            <if test="@vanilla.commons.util.mybatis.MybatisFunctions@isNotEmpty(where.data.searchToDate)">
+                AND date <![CDATA[ <= ]]> #{where.data.searchToDate}
+            </if>
+        </if>
+    </select>
+    
+    <select id="findAll" parameterType="map" resultType="MarketDaily">
+        /* MarketDailySqlMapper.findAll */
+        SELECT  m_daily.*
+        FROM    market_daily m_daily
+        WHERE   LOWER(m_daily.name) = LOWER(#{where.data.name})
+        AND     m_daily.date <![CDATA[ >= ]]> #{where.data.searchFromDate}
+        AND     m_daily.date <![CDATA[ <= ]]> #{where.data.searchToDate}
+        ORDER BY m_daily.date ASC
+    </select>
+    
+    <select id="findOne" parameterType="map" resultType="MarketDaily">
+        /* MarketDailySqlMapper.findOne */
+        SELECT  m_daily.*
+        FROM    market_daily m_daily
+        WHERE   LOWER(m_daily.name) = LOWER(#{where.data.name})
+        <if test="@vanilla.commons.util.mybatis.MybatisFunctions@isNotEmpty(where.data.date)">
+            AND m_daily.date <![CDATA[ >= ]]> #{where.data.date}
+        </if>
+        LIMIT 1
+    </select>
+    
+    <select id="findOneLastDate" parameterType="map" resultType="MarketDaily">
+        /* MarketDailySqlMapper.findOneLastDate */
+        SELECT  m_daily.*
+        FROM    (
+                    SELECT  m_daily.*
+                    FROM    market_daily m_daily
+                    WHERE   LOWER(m_daily.name) = LOWER(#{where.data.name})
+                    AND     m_daily.date <![CDATA[ < ]]> #{where.data.date}
+                ) m_daily
+        ORDER BY m_daily.date DESC
+        LIMIT 1
+    </select>
+
+</mapper>

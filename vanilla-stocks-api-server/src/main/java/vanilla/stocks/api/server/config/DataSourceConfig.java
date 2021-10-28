@@ -1,4 +1,4 @@
-package vanilla.stocks.api.server.db.h2;
+package vanilla.stocks.api.server.config;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -27,39 +27,33 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariDataSource;
 
-import lombok.extern.slf4j.Slf4j;
-import vanilla.stocks.api.server.PropertiesName;
-
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = { "vanilla.stocks.api.server.db.h2" }, transactionManagerRef = "transactionManagerH2", entityManagerFactoryRef = "entityManagerFactoryH2")
-@MapperScan(basePackages = { "vanilla.stocks.api.server.db.h2.sqlmapper" })
-@Slf4j
-public class H2DataSourceConfigurer {
+@EnableJpaRepositories(basePackages = { "vanilla.stocks.api.server" }, transactionManagerRef = "transactionManager", entityManagerFactoryRef = "entityManagerFactory")
+@MapperScan(basePackages = { "vanilla.stocks.api.server" })
+public class DataSourceConfig {
 
     @Autowired
     private ApplicationContext applicationContext;
     
-    @Bean(name = "dataSourceH2", destroyMethod = "close")
+    @Bean(name = "dataSource", destroyMethod = "close")
     public DataSource dataSourceH2() {
-        String appHome = System.getProperty(PropertiesName.APP_HOME);
-        String jdbcUrl = String.format("jdbc:log4jdbc:h2:file:%s/h2/vanilla-stocks;AUTO_SERVER=TRUE", appHome);
-        log.info("JDBC for hibernate.. {}", jdbcUrl);
+        String jdbcUrl = "jdbc:log4jdbc:mariadb://localhost:3306/vanilla_stocks?characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
 
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(jdbcUrl);
         dataSource.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
-        dataSource.setUsername("vanilla");
-        dataSource.setPassword("");
+        dataSource.setUsername("root");
+        dataSource.setPassword("Dydgus070^");
         dataSource.setConnectionTestQuery("SELECT 1");
         return dataSource;
     }
     
-    @Bean(name = "entityManagerFactoryH2")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("dataSourceH2") DataSource dataSource) {
+    @Bean(name = "entityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("dataSource") DataSource dataSource) {
         final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
-        entityManagerFactoryBean.setPackagesToScan(new String[] { "vanilla.stocks.api.server.db.h2" });
+        entityManagerFactoryBean.setPackagesToScan(new String[] { "vanilla.stocks.api.server" });
 
         final Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
@@ -75,8 +69,8 @@ public class H2DataSourceConfigurer {
         return entityManagerFactoryBean;
     }
     
-    @Bean(name = "transactionManagerH2")
-    public PlatformTransactionManager transactionManager(@Qualifier("entityManagerFactoryH2") final EntityManagerFactory emf) {
+    @Bean(name = "transactionManager")
+    public PlatformTransactionManager transactionManager(@Qualifier("entityManagerFactory") final EntityManagerFactory emf) {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(emf);
         return transactionManager;
@@ -87,19 +81,19 @@ public class H2DataSourceConfigurer {
         return new PersistenceExceptionTranslationPostProcessor();
     }
     
-    @Bean(name = "sqlSessionFactoryH2")
+    @Bean(name = "sqlSessionFactory")
     @Primary
-    public SqlSessionFactoryBean sqlSessionFactory(@Qualifier("dataSourceH2") DataSource dataSource) throws IOException {
+    public SqlSessionFactoryBean sqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) throws IOException {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
-        factoryBean.setTypeAliasesPackage("vanilla.stocks.api.server.db.h2");
+        factoryBean.setTypeAliasesPackage("vanilla.stocks.api.server");
         factoryBean.setConfigLocation(applicationContext.getResource("classpath:mybatis-config.xml"));
-        factoryBean.setMapperLocations(applicationContext.getResources("classpath:vanilla/stocks/api/server/db/h2/**/**SqlMapper.xml"));
+        factoryBean.setMapperLocations(applicationContext.getResources("classpath:vanilla/stocks/api/server/**/**SqlMapper.xml"));
         factoryBean.setVfs(SpringBootVFS.class);
         return factoryBean;
     }
     
-    @Bean(name = "sqlSessionH2")
+    @Bean(name = "sqlSession")
     @Primary
     public SqlSessionTemplate sqlSession(SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);

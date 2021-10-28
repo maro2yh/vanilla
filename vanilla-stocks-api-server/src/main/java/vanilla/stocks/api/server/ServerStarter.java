@@ -54,7 +54,7 @@ public class ServerStarter {
         System.setProperty(PropertiesName.LOG_MAX_SIZE, serverProps.getProperty(PropertiesName.LOG_MAX_SIZE));
         System.setProperty(PropertiesName.LOG_SQL, shoqSql ? "debug" : "warn");
         
-//        System.setProperty("spring.main.banner-mode", "off"); // ÄÜ¼Ö¿¡ ¹è³Ê ·Î±× ³²±â´Â °Å off
+//        System.setProperty("spring.main.banner-mode", "off"); // ìŠ¤í”„ë§ ë°°ë„ˆ ì¶œë ¥ ì‚­ì œ
         System.setProperty("spring.main.allow-bean-definition-overriding", "true");
         System.setProperty("spring.jackson.serialization.FAIL_ON_EMPTY_BEANS", "false");
         
