@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,11 @@ public class InvestorRankTask {
     
     @Autowired
     private SystemErrorRepository systemErrorRepository;
+    
+    @PostConstruct
+    public void init() {
+        execute();
+    }
     
     @Scheduled(cron = "0 30 8 * * *")
     public void execute() {
