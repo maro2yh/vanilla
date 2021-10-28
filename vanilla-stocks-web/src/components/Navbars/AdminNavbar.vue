@@ -11,7 +11,7 @@
         class="text-white text-sm uppercase hidden lg:inline-block font-semibold"
         href="javascript:void(0)"
       >
-        Dashboard
+        {{ title }}
       </a>
       <!-- Form -->
       <form
@@ -46,5 +46,15 @@ export default {
   components: {
     UserDropdown,
   },
+  data() {
+    return {
+      title: this.$route.meta.title
+    }
+  },
+  watch: {
+    $route(to) {
+      this.title = to.meta.title;
+    }
+  }
 };
 </script>

@@ -24,9 +24,7 @@
       <p class="text-sm text-blueGray-400 mt-4">
         <span class="mr-2" :class="[statPercentColor]">
           <i
-            :class="[
-              statArrow === 'up' ? `fas fa-arrow-up` : `fas fa-arrow-down`,
-            ]"
+            :class="[statArrow]"
           ></i>
           {{ statPercent }}%
         </span>
@@ -41,42 +39,38 @@ export default {
   props: {
     statSubtitle: {
       type: String,
-      default: "Traffic",
+      default: "",
     },
     statTitle: {
       type: String,
-      default: "350,897",
+      default: "",
     },
     statArrow: {
-      default: "up",
-      validator: function (value) {
-        // The value must match one of these strings
-        return ["up", "down"].indexOf(value) !== -1;
-      },
+      default: ""
     },
     statPercent: {
       type: String,
-      default: "3.48",
+      default: "",
     },
     // can be any of the text color utilities
     // from tailwindcss
     statPercentColor: {
       type: String,
-      default: "text-emerald-500",
+      default: "",
     },
     statDescripiron: {
       type: String,
-      default: "Since last month",
+      default: "",
     },
     statIconName: {
       type: String,
-      default: "far fa-chart-bar",
+      default: "",
     },
     // can be any of the background color utilities
     // from tailwindcss
     statIconColor: {
       type: String,
-      default: "bg-red-500",
+      default: "",
     },
   },
 };

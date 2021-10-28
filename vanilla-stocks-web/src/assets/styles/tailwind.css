@@ -4254,3 +4254,9 @@ select {
 
 @media (min-width: 1536px) {
 }
+
+table > tbody > tr.hover:hover {
+  cursor: pointer;
+  background-color: #808080;
+  color: white;
+}
