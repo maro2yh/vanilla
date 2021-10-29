@@ -17,17 +17,17 @@ import vanilla.stocks.common.util.VanillaStringUtils;
 
 public class InvestorTrendDailyPage {
 
-    public List<Map<String, Object>> get(String startDate, String endDate) throws IOException {
+    public List<Map<String, Object>> get(String market, String startDate, String endDate) throws IOException {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
-        String now = VanillaCalendarUtils.now("YYYYMMdd");
+        String sosok = market.equalsIgnoreCase("kospi") ? "01" : "02";
         long startDateL = VanillaStringUtils.toLong(startDate);
         long endDateL = VanillaStringUtils.toLong(endDate);
         int page = 1;
         boolean isEnd = false;
 
         do {
-            String url = String.format(URLs.INVESTOR_TREND_DAILY, now, page);
+            String url = String.format(URLs.INVESTOR_TREND_DAILY, startDate, sosok, page);
             Document doc = Jsoup.connect(url).get();
             Element tableEl = doc.select(".type_1").get(0);
             Elements trEls = tableEl.select("tr");
@@ -70,6 +70,7 @@ public class InvestorTrendDailyPage {
 
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("date", date);
+                map.put("market", market);
                 map.put("personal", investor1); // 개인
                 map.put("foreginer", investor2); // 외국인
                 map.put("agency", investor3); // 기관

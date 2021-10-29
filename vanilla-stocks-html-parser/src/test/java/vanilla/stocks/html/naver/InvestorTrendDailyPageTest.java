@@ -17,7 +17,7 @@ public class InvestorTrendDailyPageTest {
         String endDate = VanillaCalendarUtils.amount(Calendar.DAY_OF_MONTH, -30, "yyyyMMdd");
         
         try {
-            List<Map<String, Object>> list = new InvestorTrendDailyPage().get(startDate, endDate);
+            List<Map<String, Object>> list = new InvestorTrendDailyPage().get("KOSPI", startDate, endDate);
             
             for (Map<String, Object> map : list) {
                 System.out.println(map.toString());
