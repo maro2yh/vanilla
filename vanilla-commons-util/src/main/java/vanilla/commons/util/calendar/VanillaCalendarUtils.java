@@ -4,12 +4,35 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Set;
 
 import vanilla.commons.util.string.VanillaStringUtils;
 
 public class VanillaCalendarUtils {
     
     public static String DEFAULT_FORMAT = "YYYYMMddHHmmss";
+    
+    public static boolean todayIsHoliday() {
+        Calendar cal = Calendar.getInstance();
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        
+        if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
+            return true;
+        }
+        
+        boolean isHoliday = false;
+        Set<String> holidays = new KoreaHoliday().holidayArray(now("yyyy"));
+        String today = now("yyyyMMdd");
+        
+        for (String holiday : holidays) {
+            if (holiday.equals(today)) {
+                isHoliday = true;
+                break;
+            }
+        }
+        
+        return isHoliday;
+    }
 
     public static String now() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("YYYYMMddHHmmss");

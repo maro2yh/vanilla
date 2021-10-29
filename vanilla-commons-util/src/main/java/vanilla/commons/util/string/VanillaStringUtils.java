@@ -4,28 +4,29 @@ import org.apache.commons.lang3.StringUtils;
 
 public class VanillaStringUtils {
 
-    public static Integer toInteger(String text) {
+    public static Integer toInteger(Object text) {
         return toInteger(text, null);
     }
 
-    public static Integer toInteger(String text, Integer def) {
-        if (StringUtils.isEmpty(text) || text.equals("-")) {
+    public static Integer toInteger(Object text, Integer def) {
+        if (text == null || StringUtils.isEmpty(String.valueOf(text)) || text.equals("-")) {
             return def;
         }
 
+        String str = String.valueOf(text);
         String number = "";
 
-        for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) == '.') {
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == '.') {
                 break;
             }
 
-            if (Character.isDigit(text.charAt(i))) {
-                number += text.charAt(i);
+            if (Character.isDigit(str.charAt(i))) {
+                number += str.charAt(i);
             }
         }
 
-        if (text.startsWith("-")) {
+        if (str.startsWith("-")) {
             number = "-" + number;
         }
 
@@ -36,28 +37,29 @@ public class VanillaStringUtils {
         }
     }
 
-    public static Long toLong(String text) {
+    public static Long toLong(Object text) {
         return toLong(text, null);
     }
 
-    public static Long toLong(String text, Long def) {
-        if (StringUtils.isEmpty(text) || text.equals("-")) {
+    public static Long toLong(Object text, Long def) {
+        if (text == null || StringUtils.isEmpty(String.valueOf(text)) || text.equals("-")) {
             return def;
         }
 
+        String str = String.valueOf(text);
         String number = "";
 
-        for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) == '.') {
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == '.') {
                 break;
             }
 
-            if (Character.isDigit(text.charAt(i))) {
-                number += text.charAt(i);
+            if (Character.isDigit(str.charAt(i))) {
+                number += str.charAt(i);
             }
         }
 
-        if (text.startsWith("-")) {
+        if (str.startsWith("-")) {
             number = "-" + number;
         }
 
@@ -68,26 +70,27 @@ public class VanillaStringUtils {
         }
     }
 
-    public static Double toDouble(String text) {
+    public static Double toDouble(Object text) {
         return toDouble(text, null);
     }
 
-    public static Double toDouble(String text, Double def) {
-        if (StringUtils.isEmpty(text) || text.equals("-")) {
+    public static Double toDouble(Object text, Double def) {
+        if (text == null || StringUtils.isEmpty(String.valueOf(text)) || text.equals("-")) {
             return def;
         }
 
+        String str = String.valueOf(text);
         String number = "";
 
-        for (int i = 0; i < text.length(); i++) {
-            if (Character.isDigit(text.charAt(i))) {
-                number += text.charAt(i);
-            } else if (text.charAt(i) == '.') {
-                number += text.charAt(i);
+        for (int i = 0; i < str.length(); i++) {
+            if (Character.isDigit(str.charAt(i))) {
+                number += str.charAt(i);
+            } else if (str.charAt(i) == '.') {
+                number += str.charAt(i);
             }
         }
 
-        if (text.startsWith("-")) {
+        if (str.startsWith("-")) {
             number = "-" + number;
         }
 
@@ -101,27 +104,28 @@ public class VanillaStringUtils {
             throw new NumberFormatException(e.getMessage());
         }
     }
-    
-    public static Float toFloat(String text) {
+
+    public static Float toFloat(Object text) {
         return toFloat(text, null);
     }
 
-    public static Float toFloat(String text, Float def) {
-        if (StringUtils.isEmpty(text) || text.equals("-")) {
+    public static Float toFloat(Object text, Float def) {
+        if (text == null || StringUtils.isEmpty(String.valueOf(text)) || text.equals("-")) {
             return def;
         }
 
+        String str = String.valueOf(text);
         String number = "";
 
-        for (int i = 0; i < text.length(); i++) {
-            if (Character.isDigit(text.charAt(i))) {
-                number += text.charAt(i);
-            } else if (text.charAt(i) == '.') {
-                number += text.charAt(i);
+        for (int i = 0; i < str.length(); i++) {
+            if (Character.isDigit(str.charAt(i))) {
+                number += str.charAt(i);
+            } else if (str.charAt(i) == '.') {
+                number += str.charAt(i);
             }
         }
 
-        if (text.startsWith("-")) {
+        if (str.startsWith("-")) {
             number = "-" + number;
         }
 

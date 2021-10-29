@@ -13,6 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <commons.lang3.version>3.11</commons.lang3.version>
         <commons.io.version>2.6</commons.io.version>
+        <icu4j.version>4.0.1</icu4j.version>
     </properties>
 
     <dependencies>
@@ -25,6 +26,11 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons.io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>${icu4j.version}</version>
         </dependency>
     </dependencies>
 
