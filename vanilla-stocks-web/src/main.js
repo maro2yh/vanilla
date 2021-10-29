@@ -27,6 +27,7 @@ import Maps from "@/views/admin/Maps.vue";
 import MarketStatus from "@/views/admin/MarketStatus.vue";
 import UpjongStatus from "@/views/admin/UpjongStatus.vue";
 import ThemeStatus from "@/views/admin/ThemeStatus.vue";
+import InvestorStatus from "@/views/admin/InvestorStatus.vue";
 
 // views for Auth layout
 
@@ -90,6 +91,14 @@ const routes = [
           title: "테마현황"
         }
       },
+      {
+        path: "/admin/investor",
+        name: "InvestorStatus",
+        component: InvestorStatus,
+        meta: {
+          title: "투자자별 매매 현황"
+        }
+      }
     ],
   },
   {

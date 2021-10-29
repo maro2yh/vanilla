@@ -70,7 +70,6 @@ export default {
   },
   watch: {
     rowsData() {
-      console.log(this.options.active);
     }
   },
   methods: {
