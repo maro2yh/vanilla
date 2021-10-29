@@ -10,8 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -20,6 +22,15 @@ import vanilla.commons.util.file.VanillaFileUtils;
 @SpringBootApplication
 @EnableScheduling
 public class ApplicationStarter {
+    
+    @Bean
+    public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
+        ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+        threadPoolTaskScheduler.setPoolSize(10);
+        threadPoolTaskScheduler.setThreadNamePrefix("VanillaStocksScheduler-");
+        return threadPoolTaskScheduler;
+    }
+    
     public static void main(String[] args) throws Exception {
         String homeDirPath = System.getProperty(PropertiesName.APP_HOME);
         File confDir = VanillaFileUtils.getFile(homeDirPath, "conf");
@@ -56,7 +67,7 @@ public class ApplicationStarter {
         System.setProperty(PropertiesName.LOG_MAX_SIZE, serverProps.getProperty(PropertiesName.LOG_MAX_SIZE));
         System.setProperty(PropertiesName.LOG_SQL, shoqSql ? "debug" : "warn");
         
-        // System.setProperty("spring.main.banner-mode", "off"); // ÄÜ¼Ö¿¡ ¹è³Ê ·Î±× ³²±â´Â °Å off
+        // System.setProperty("spring.main.banner-mode", "off"); // ï¿½Ü¼Ö¿ï¿½ ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ off
         System.setProperty("spring.main.allow-bean-definition-overriding", "true");
         System.setProperty("spring.jackson.serialization.FAIL_ON_EMPTY_BEANS", "false");
         

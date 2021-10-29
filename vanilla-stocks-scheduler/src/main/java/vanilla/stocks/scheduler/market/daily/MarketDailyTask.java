@@ -1,6 +1,7 @@
-package vanilla.stocks.scheduler.upjong.daily;
+package vanilla.stocks.scheduler.market.daily;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
@@ -12,29 +13,24 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import vanilla.commons.util.calendar.VanillaCalendarUtils;
-import vanilla.stocks.html.naver.UpjongPage;
-import vanilla.stocks.scheduler.system.error.SystemError;
-import vanilla.stocks.scheduler.system.error.SystemErrorRepository;
+import vanilla.stocks.html.naver.MarketDailyPage;
 import vanilla.stocks.scheduler.task.IVanillaSchedule;
 import vanilla.stocks.scheduler.task.VanillaScheduleScan;
 
 @Slf4j
 @Component
-@VanillaScheduleScan(name = "UpjongDaily", type = "cron", cron = "0 0 16 * * *")
-public class UpjongDailyTask implements Runnable, IVanillaSchedule {
+@VanillaScheduleScan(name = "MarketDaily", type = "cron", cron = "0 0 16 * * *", startUpRun = true)
+public class MarketDailyTask implements Runnable, IVanillaSchedule {
     
     @Autowired
     private ThreadPoolTaskScheduler threadPoolTaskScheduler;
     private ScheduledFuture<?> scheduledFuture;
     
     private boolean running;
+    
+    @Autowired
+    private MarketDailyRepository marketDailyRepository;
 
-    @Autowired
-    private UpjongDailyRepository upjongDailyRepository;
-    
-    @Autowired
-    private SystemErrorRepository systemErrorRepository;
-    
     @Override
     public void start(int time) {
         if (running && scheduledFuture != null) {
@@ -79,23 +75,46 @@ public class UpjongDailyTask implements Runnable, IVanillaSchedule {
 
     @Override
     public void run() {
-        log.debug("Start the 'UpjongDaily' scheduler.");
-
-        String date = VanillaCalendarUtils.now("yyyyMMdd");
+        log.debug("Start the 'MarketDaily' scheduler.");
+        
+        String startDate = VanillaCalendarUtils.now("yyyyMMdd");
+        String endDate = VanillaCalendarUtils.amount(Calendar.DAY_OF_MONTH, -20, "yyyyMMdd");
+        
+        if (marketDailyRepository.countByDateAndName(startDate, "KOSPI") > 0) {
+            endDate = VanillaCalendarUtils.amount(Calendar.DAY_OF_MONTH, -1, "yyyyMMdd");
+        }
+        
         List<Map<String, Object>> list = null;
-
+        
         try {
-            list = new UpjongPage().getList();
+            list = new MarketDailyPage().get("kospi", startDate, endDate);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-            systemErrorRepository.save(new SystemError(e.getMessage()));
             return;
         }
         
         for (Map<String, Object> map : list) {
-            upjongDailyRepository.save(new UpjongDaily(date, map));
+            marketDailyRepository.save(new MarketDaily(map));
         }
-
-        log.debug("Completed the 'UpjongDaily' scheduler.");
+        
+        list = null;
+        endDate = VanillaCalendarUtils.amount(Calendar.DAY_OF_MONTH, -20, "yyyyMMdd");
+        
+        if (marketDailyRepository.countByDateAndName(startDate, "KOSDAQ") > 0) {
+            endDate = VanillaCalendarUtils.amount(Calendar.DAY_OF_MONTH, -1, "yyyyMMdd");
+        }
+        
+        try {
+            list = new MarketDailyPage().get("kosdaq", startDate, endDate);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            return;
+        }
+        
+        for (Map<String, Object> map : list) {
+            marketDailyRepository.save(new MarketDaily(map));
+        }
+        
+        log.debug("Completed the 'MarketDaily' scheduler.");
     }
 }
