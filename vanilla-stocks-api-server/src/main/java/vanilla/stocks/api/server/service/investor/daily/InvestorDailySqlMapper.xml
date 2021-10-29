@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="vanilla.stocks.api.server.service.investor.daily.InvestorDailySqlMapper">
+    
+    <select id="findAll" parameterType="map" resultType="InvestorDaily">
+        /* InvestorDailySqlMapper.findAll */
+        SELECT  i_daily.*
+        FROM    investor_daily i_daily
+        WHERE   LOWER(i_daily.market) = LOWER(#{where.data.market})
+        AND     i_daily.date <![CDATA[ >= ]]> #{where.data.searchFromDate}
+        AND     i_daily.date <![CDATA[ <= ]]> #{where.data.searchToDate}
+    </select>
+    
+    <select id="findOneLastDate" parameterType="map" resultType="InvestorDaily">
+        /* InvestorDailySqlMapper.findOneLastDate */
+        SELECT  i_daily.*
+        FROM    (
+                    SELECT  i_daily.*
+                    FROM    investor_daily i_daily
+                    WHERE   LOWER(i_daily.market) = LOWER(#{where.data.market})
+                    AND     i_daily.date <![CDATA[ < ]]> #{where.data.date}
+                ) i_daily
+        ORDER BY i_daily.date DESC
+        LIMIT 1
+    </select>
+
+</mapper>
