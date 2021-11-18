@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,8 +25,8 @@ public class GetInvestorDailyController {
     @Autowired
     private InvestorDailySqlMapper investorDailySqlMapper;
 
-    @GetMapping("/investor/daily")
-    public Object getDaily(@RequestParam(value = "market", required = true) String market, @RequestParam(value = "searchFromDate", required = true) String searchFromDate,
+    @GetMapping("/{market}/investor/daily")
+    public Object getDaily(@PathVariable String market, @RequestParam(value = "searchFromDate", required = true) String searchFromDate,
             @RequestParam(value = "searchToDate", required = true) String searchToDate) throws IOException {
 
         InvestorDaily dailyData = investorDailyRepository.findOneByDateAndMarket(searchToDate, market);
