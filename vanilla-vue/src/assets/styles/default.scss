@@ -1,0 +1,9 @@
+.panel-body {
+  .with-header-with-footer {
+    height: calc(100vh - 280px);
+  }
+
+  .without-header-with-footer {
+    height: calc(100vh - 240px);
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "sessions": [
+    {
+      "id": 1655194631683,
+      "name": "구글 클라우드",
+      "isLeaf": false,
+      "children": []
+    },
+    {
+      "id": 1655273410863,
+      "name": "123",
+      "isLeaf": true
+    }
+  ]
+}
