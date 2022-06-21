@@ -1,33 +1,35 @@
 <template>
   <div>
     <panel title="Sessions" noHeader="true" noButton="true" id="panel-sessions">
-      <vue-custom-scrollbar class="without-header-with-footer">
-        <vue-tree-list
-          @click="onClickTreeNode"
-          @change-name="onChangeName"
-          @delete-node="onDel"
-          @add-node="onAddNode"
-          :model="treeData"
-          default-tree-node-name="new node"
-          default-leaf-node-name="new leaf"
-          v-bind:default-expanded="false"
-        >
-          <template v-slot:leafNameDisplay="slotProps">
-            <span>
-              {{ slotProps.model.name }} <span class="muted">#{{ slotProps.model.id }}</span>
-            </span>
-          </template>
-          <span class="icon" slot="addTreeNodeIcon"><span><i class="fa fa-folder-plus" /></span></span>
-          <span class="icon ms-1" slot="addLeafNodeIcon"><span><i class="fa fa-plus" /></span></span>
-          <span class="icon ms-1" slot="editNodeIcon"><span><i class="fa fa-edit" /></span></span>
-          <span class="icon ms-1" slot="delNodeIcon"><span><i class="fa fa-remove" /></span></span>
-          <span class="icon me-1" slot="leafNodeIcon"><span><i class="fa fa-file" /></span></span>
-          <span class="icon me-1" slot="treeNodeIcon"><span><i class="fa fa-folder" /></span></span>
-        </vue-tree-list>
+      <vue-custom-scrollbar>
+        <div class="without-header-with-footer">
+          <vue-tree-list
+            @click="onClickTreeNode"
+            @changed-name="onChangeName"
+            @delete-node="onClickDelete"
+            @add-node="onClickAddNode"
+            :model="treeData"
+            default-tree-node-name="new folder"
+            default-leaf-node-name="new site"
+            v-bind:default-expanded="false"
+          >
+            <template v-slot:leafNameDisplay="slotProps">
+              <span>
+                {{ slotProps.model.name }} <span class="muted">#{{ slotProps.model.id }}</span>
+              </span>
+            </template>
+            <span class="icon" slot="addTreeNodeIcon"><span><i class="fa fa-folder-plus" /></span></span>
+            <span class="icon ms-1" slot="addLeafNodeIcon"><span><i class="fa fa-plus" /></span></span>
+            <span class="icon ms-1" slot="editNodeIcon"><span><i class="fa fa-edit" /></span></span>
+            <span class="icon ms-1" slot="delNodeIcon"><span><i class="fa fa-remove" /></span></span>
+            <span class="icon me-1" slot="leafNodeIcon"><span><i class="fa fa-file" /></span></span>
+            <span class="icon me-1" slot="treeNodeIcon"><span><i class="fa fa-folder" /></span></span>
+          </vue-tree-list>
+        </div>
       </vue-custom-scrollbar>
       <div slot="footer" class="text-end">
-        <button class="btn btn-primary btn-sm ms-5px">New Folder</button>
-        <button class="btn btn-primary btn-sm ms-5px">New Site</button>
+        <button class="btn btn-primary btn-sm ms-5px" @click="onClickNewFolder">New Folder</button>
+        <button class="btn btn-primary btn-sm ms-5px" @click="onClickNewSite">New Site</button>
       </div>
     </panel>
   </div>
@@ -60,7 +62,7 @@ export default {
         }
       ]),
       fileData: [],
-      selectedNode: {}
+      selectedNode: null
     }
   },
   created() {
@@ -74,31 +76,93 @@ export default {
       this.fileData = SessionFile.read()
       this.fileData.sessions.forEach((session) => {
         const node = new TreeNode(session)
+        
+        if (!session.isLeaf && session.children.length > 0) {
+          this.initChildren(node, session)
+        }
+
         this.treeData.addChildren(node)
       })
     },
-    onReadyNewSession() {
+    initChildren(parent, params) {
+      params.children.forEach((session) => {
+        const node = new TreeNode(session)
 
+         if (!session.isLeaf && session.children.length > 0) {
+          this.initChildren(node, session)
+        }
+
+        parent.addChildren(node)
+      })
     },
-    onDel(node) {
-      console.log(node)
-      node.remove()
-    },
-    onChangeName(params) {
-      let data = null
+    onClickDelete(params) {
+      let delIdx = -1
 
       for (let i = 0; i < this.fileData.sessions.length; i++) {
         if (this.fileData.sessions[i]. id === params.id) {
-          data = this.fileData.sessions[i]
+          delIdx = i
           break
+        } else if (!this.fileData.sessions[i].isLeaf) {
+          this.deleteNode(this.fileData.sessions[i], params)
         }
       }
 
-      data.name = params.newName
+      if (delIdx >= 0) {
+        this.fileData.sessions.splice(delIdx, 1)
+      }
+
+      params.remove()
       SessionFile.write(this.fileData)
     },
-    onAddNode(params) {
-      console.log(params)
+    onChangeName(params) {
+      for (let i = 0; i < this.fileData.sessions.length; i++) {
+        if (this.fileData.sessions[i]. id === params.id) {
+          this.fileData.sessions[i].name = params.newName
+
+          if (this.fileData.sessions[i].isLeaf) {
+            this.fileData.sessions[i].session.sessionName = params.newName
+          }
+
+          break
+        }  else if (!this.fileData.sessions[i].isLeaf) {
+          this.changeName(this.fileData.sessions[i], params)
+        }
+      }
+
+      SessionFile.write(this.fileData)
+    },
+    onClickAddNode(params) {
+      for (let i = 0; i < this.fileData.sessions.length; i++) {
+        if (this.fileData.sessions[i].id === params.parent.id) {
+          const data = {
+            id: params.id,
+            name: params.name,
+            isLeaf: params.isLeaf
+          }
+
+          if (!params.isLeaf) {
+            data.children = []
+          } else {
+            data.session = {
+              sessionName: '',
+              hostname: '',
+              port: '',
+              credentials: ''
+            }
+          }
+
+          this.fileData.sessions[i].children.push(data)
+          break
+        } else if (!this.fileData.sessions[i].isLeaf) {
+          this.addNewNode(this.fileData.sessions[i], params)
+        }
+      }
+
+      SessionFile.write(this.fileData)
+
+      this.$nextTick(function() { 
+        this.onClickTreeNode(params)
+      })
     },
     onClickTreeNode(params) {
       if (this.selectedNode && this.selectedNode.id && this.selectedNode.id === params.id) {
@@ -113,20 +177,6 @@ export default {
       this.selectedNode = params
 
       this.$emit('onClickTreeNode', params)
-    },
-    onClickAddNewFolder() {
-      var node = new TreeNode({ name: 'new folder', isLeaf: false })
-      if (!this.treeData.children) this.treeData.children = []
-      this.treeData.addChildren(node)
-
-      this.fileData.sessions.push({
-        id: node.id,
-        name: node.name,
-        isLeaf: false,
-        children: []
-      })
-
-      SessionFile.write(this.fileData)
     },
     createNewSession(data) {
       var node = new TreeNode({ name: data.sessionName, isLeaf: true })
@@ -145,6 +195,128 @@ export default {
     goNewSessionPage() {
       this.$route.path('/ssh/new-session')
     },
+    addNewNode(parent, params) {
+      for (let i = 0; i < parent.children.length; i++) {
+        if (parent.children[i].id === params.parent.id) {
+          const data = {
+            id: params.id,
+            name: params.name,
+            isLeaf: params.isLeaf
+          }
+
+          if (!params.isLeaf) {
+            data.children = []
+          } else {
+            data.session = {
+              sessionName: '',
+              hostname: '',
+              port: '',
+              credentials: ''
+            }
+          }
+
+          parent.children[i].children.push(data)
+          break
+        } else if (!parent.children[i].isLeaf) {
+          this.addNewNode(parent.children[i], params)
+        }
+      }
+    },
+    deleteNode(parent, params) {
+      let delIdx = -1
+
+      for (let i = 0; i < parent.children.length; i++) {
+        if (parent.children[i].id === params.id) {
+          delIdx = i
+          break
+        } else if (!parent.children[i].isLeaf) {
+          this.deleteNode(parent.children[i], params)
+        }
+      }
+
+      if (delIdx >= 0) {
+        parent.children.splice(delIdx, 1)
+      }
+    },
+    changeName(parent, params) {
+      for (let i = 0; i < parent.children.length; i++) {
+        if (parent.children[i].id === params.id) {
+          parent.children[i].name = params.newName
+
+          if (parent.children[i].isLeaf) {
+            parent.children[i].session.sessionName = params.newName
+          }
+
+          break
+        } else if (!parent.children[i].isLeaf) {
+          this.changeName(parent.children[i], params)
+        }
+      }
+    },
+    onClickNewFolder() {
+      const node = new TreeNode({
+        name: 'new folder',
+        isLeaf: false,
+        children: []
+      })
+
+      const params = {
+        id: node.id,
+        name: node.name,
+        isLeaf: false,
+        children: []
+      }
+
+      if (!this.selectedNode || this.selectedNode.id === 1) {
+        this.treeData.addChildren(node)
+        params.parent = {
+          id: 1
+        }
+      } else if (this.selectedNode && !this.selectedNode.isLeaf) {
+        this.selectedNode.addChildren(node)
+        params.parent = {
+          id: this.selectedNode.id
+        }
+      } else {
+        this.selectedNode.parent.addChildren(node)
+        params.parent = {
+          id: this.selectedNode.parent.id
+        }
+      }
+
+      this.onClickAddNode(params)
+    },
+    onClickNewSite() {
+      const node = new TreeNode({
+        name: 'new site',
+        isLeaf: true
+      })
+
+      const params = {
+        id: node.id,
+        name: node.name,
+        isLeaf: true
+      }
+
+      if (!this.selectedNode || this.selectedNode.id === 1) {
+        this.treeData.addChildren(node)
+        params.parent = {
+          id: 1
+        }
+      } else if (this.selectedNode && !this.selectedNode.isLeaf) {
+        this.selectedNode.addChildren(node)
+        params.parent = {
+          id: this.selectedNode.id
+        }
+      } else {
+        this.selectedNode.parent.addChildren(node)
+        params.parent = {
+          id: this.selectedNode.parent.id
+        }
+      }
+
+      this.onClickAddNode(params)
+    }
     /*
     connect() {
       this.client = new Client()
