@@ -2,10 +2,10 @@
 	<div class="app" v-if="!appOptions.appEmpty" v-bind:class="{
 		'app-header-fixed': appOptions.appHeaderFixed && !appOptions.appHeaderNone,
 		'app-sidebar-fixed': appOptions.appSidebarFixed,
-		'app-sidebar-minified': appOptions.appSidebarMinified, 
-		'app-content-full-height': appOptions.appContentFullHeight, 
-		'app-without-sidebar': appOptions.appSidebarNone, 
-		'app-with-end-sidebar': appOptions.appSidebarEnd, 
+		'app-sidebar-minified': appOptions.appSidebarMinified,
+		'app-content-full-height': appOptions.appContentFullHeight,
+		'app-without-sidebar': appOptions.appSidebarNone,
+		'app-with-end-sidebar': appOptions.appSidebarEnd,
 		'app-with-two-sidebar': appOptions.appSidebarTwo,
 		'app-with-wide-sidebar': appOptions.appSidebarWide,
 		'app-with-light-sidebar': appOptions.appSidebarLight,
@@ -18,7 +18,7 @@
 		'app-gradient-enabled': appOptions.appGradientEnabled,
 		'has-scroll': appOptions.appBodyScrollTop
 	}">
-		<Header />
+		<Header v-if="!appOptions.appHeaderNone" />
 		<TopMenu v-if="appOptions.appTopMenu" />
 		<Sidebar v-if="!appOptions.appSidebarNone" />
 		<SidebarRight v-if="appOptions.appSidebarTwo" />
@@ -158,20 +158,20 @@ export default {
   },
 	created() {
 		AppOptions.appBodyScrollTop = window.scrollY;
-		
+
 		window.addEventListener('scroll', this.handleScroll);
-		
+
 		this.$insProgress.start()
 		this.handleSetColor();
 		this.handleSetFont();
-		
+
 		if (AppOptions.appDarkMode) {
 			this.handleSetDarkMode(true);
 		}
 		if (AppOptions.appTheme) {
 			this.handleSetTheme(AppOptions.appTheme);
 		}
-		
+
 		this.$router.beforeEach((to, from, next) => {
 			this.$insProgress.start()
 			if (AppOptions.appDarkMode) {

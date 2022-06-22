@@ -266,7 +266,7 @@ export default {
         }
 
         this.onChangeCredenrials()
-        
+
         if (this.selectedCredential) {
           this.form.username = this.selectedCredential.username
           this.form.password = this.selectedCredential.password
@@ -322,7 +322,7 @@ export default {
       // this.form.password = this.$refs['Password'].value
       // this.form.privateKey = (document.getElementById('privateKey').files !== null && document.getElementById('privateKey').files.length > 0) ? document.getElementById('privateKey').files[0].path : ''
       // this.form.credentialsName = (this.$refs['CredentialsName'].value && this.$refs['CredentialsName'].value.trim()) ? this.$refs['CredentialsName'].value : this.form.sessionName
-            
+
       this.$emit('onSaveSession', {id: this.id, data: this.form})
     },
     clearFields() {
@@ -354,7 +354,18 @@ export default {
       this.isEdit = true
     },
     onClickConnectBtn() {
-
+      const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left
+      const dualScreenTop = window.screenTop !== undefined ? window.screenTop : screen.top
+      const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width
+      const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height
+      const w = 900
+      const h = 600
+      const mw = width * 0.4
+      const mh = height * 0.4
+      const left = ((width / 2) - (w / 2)) + dualScreenLeft
+      const top = ((height / 2) - (h / 2)) + dualScreenTop
+      const route = this.$router.resolve({ name: 'SshTerminal', query: { id: this.id }})
+      window.open(route.href, '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, alwaysRaised=on, width=' + w + ', height=' + h + ', top-' + top + ', left=' + left + ', minwidth=' + mw + ', minheight=' + mh).focus()
     }
   }
 }

@@ -1,5 +1,6 @@
 <script>
-import SessionManage from '@/pages/ssh/SessionManage.vue'
+import SshSessionManage from '@/pages/ssh/SessionManage.vue'
+import SshTerminal from '@/pages/ssh/Terminal.vue'
 import DashboardV1 from '../pages/Dashboard-v1.vue'
 import DashboardV2 from '../pages/Dashboard-v2.vue'
 import DashboardV3 from '../pages/Dashboard-v3.vue'
@@ -72,7 +73,8 @@ import HelperCss from '../pages/Helper-css'
 const routes = [
   { path: '*', redirect: '/ssh/sessions' },
   { path: '/', redirect: '/ssh/sessions' },
-  { path: '/ssh/sessions', component: SessionManage, name: 'SessionManage', meta: { title: 'SSH Session Manage' } },
+  { path: '/ssh/sessions', component: SshSessionManage, name: 'SshSessionManage', meta: { title: 'SSH Session Manage' } },
+  { path: '/ssh/terminal', component: SshTerminal, name: 'SshTerminal', meta: { title: 'SSH Terminal' } },
   // { path: '/ssh/new-session', component: SshNewSession, name: 'SshNewSessiont', meta: { title: 'Create New Session' } },
   { path: '/dashboard/v1', component: DashboardV1 },
   { path: '/dashboard/v2', component: DashboardV2 },

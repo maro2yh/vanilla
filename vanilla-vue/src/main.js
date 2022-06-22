@@ -46,6 +46,7 @@ import 'vue-slider-component/theme/antd.css'
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import 'vue-custom-scrollbar/dist/vueScrollbar.css'
+import 'xterm/css/xterm.css'
 
 // color admin css
 import './scss/vue.scss'

@@ -3,6 +3,7 @@ const appOptions = {
 	appTheme: 'teal',
 	appDarkMode: false,
 	appGradientEnabled: false,
+  appHeaderNone: false,
   appSidebarMinified: false,
   appSidebarNone: false,
   appSidebarEnd: false,
