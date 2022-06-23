@@ -152,9 +152,15 @@
             <div class="text-start">
               <button class="btn btn-primary btn-sm ms-5px"
                 v-if="connectBtnEnabled"
-                @click="onClickConnectBtn"
+                @click="onClickSshBtn"
               >
-                Connect
+                SSH
+              </button>
+              <button class="btn btn-primary btn-sm ms-5px"
+                v-if="connectBtnEnabled"
+                @click="onClickFtpBtn"
+              >
+                SFTP
               </button>
             </div>
           </div>
@@ -353,19 +359,31 @@ export default {
     onClickEditBtn() {
       this.isEdit = true
     },
-    onClickConnectBtn() {
+    onClickSshBtn() {
       const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left
       const dualScreenTop = window.screenTop !== undefined ? window.screenTop : screen.top
       const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width
       const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height
-      const w = 900
-      const h = 600
+      // const w = 900
+      // const h = 600
       const mw = width * 0.4
       const mh = height * 0.4
-      const left = ((width / 2) - (w / 2)) + dualScreenLeft
-      const top = ((height / 2) - (h / 2)) + dualScreenTop
+      const left = ((width / 2)) + dualScreenLeft
+      const top = ((height / 2)) + dualScreenTop
       const route = this.$router.resolve({ name: 'SshTerminal', query: { id: this.id }})
-      window.open(route.href, '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, alwaysRaised=on, width=' + w + ', height=' + h + ', top-' + top + ', left=' + left + ', minwidth=' + mw + ', minheight=' + mh).focus()
+      window.open(route.href, '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, alwaysRaised=on, width=' + width + ', height=' + height + ', top-' + top + ', left=' + left + ', minwidth=' + mw + ', minheight=' + mh).focus()
+    },
+    onClickFtpBtn() {
+      const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left
+      const dualScreenTop = window.screenTop !== undefined ? window.screenTop : screen.top
+      const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width
+      const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height
+      const mw = width * 0.4
+      const mh = height * 0.4
+      const left = ((width / 2)) + dualScreenLeft
+      const top = ((height / 2)) + dualScreenTop
+      const route = this.$router.resolve({ name: 'FtpBrowser', query: { id: this.id }})
+      window.open(route.href, '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, alwaysRaised=on, width=' + width + ', height=' + height + ', top-' + top + ', left=' + left + ', minwidth=' + mw + ', minheight=' + mh).focus()
     }
   }
 }

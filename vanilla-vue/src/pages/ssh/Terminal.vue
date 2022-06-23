@@ -1,5 +1,5 @@
 <template>
-  <div id="terminal">
+  <div id="terminal" class="terminal">
   </div>
 </template>
 
@@ -8,6 +8,7 @@ import AppOptions from '@/config/AppOptions.vue'
 import SessionFile from '@/pages/ssh/SessionFile.js'
 import CredentialsFile from '@/pages/ssh/CredentialsFile.js'
 import { Terminal } from 'xterm'
+import { FitAddon } from 'xterm-addon-fit'
 import { Client } from 'ssh2'
 
 const fs = require('fs')
@@ -20,7 +21,9 @@ export default {
       session: null,
       credential: null,
       term: null,
-      socket: null
+      command: '',
+      sshClient: null,
+      sshStream: null
     }
   },
   created() {
@@ -45,9 +48,12 @@ export default {
 
     this.title = this.session.sessionName
     this.findCredentialData(this.session.credentials)
+
+    window.addEventListener('keypress', this.onKeypress)
   },
   mounted() {
-    this.connect()
+    this.createTerminal()
+    // this.connect()
   },
   methods: {
     findSessionData(parent) {
@@ -66,7 +72,6 @@ export default {
     },
     findCredentialData(id) {
       const fileData = CredentialsFile.read()
-      console.log(fileData)
 
       for (let data of fileData.credentials) {
         if (data.id === id) {
@@ -75,7 +80,7 @@ export default {
         }
       }
     },
-    connect() {
+    createTerminal() {
       this.term = new Terminal({
         rendererType: "canvas", //type of rendering
         rows: 35, // number of rows
@@ -90,29 +95,48 @@ export default {
           cursor : "help" // Set the cursor
         }
       });
+
+      const fitAddon = new FitAddon()
+      this.term.loadAddon(fitAddon)
+
       this.term.open(document.getElementById('terminal'))
+      fitAddon.fit()
       this.term.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ')
 
-      this.client = new Client()
-      this.client.on('ready', () => {
-        console.log('Client :: ready')
-        this.client.shell((err, stream) => {
+      this.term.onKey((key) => {
+        console.log(key)
+
+        if (key.domEvent.keyCode === 13) {
+          this.term.write('\n')
+          this.command += '\n'
+          this.sshStream.write(this.command)
+          this.command = ''
+        } else {
+          this.term.write(key.key)
+          this.command += key.key
+        }
+      })
+    },
+    connect() {
+      this.sshClient = new Client()
+      this.sshClient.on('ready', () => {
+        this.sshClient.shell((err, stream) => {
           if (err) throw err
           stream.on('close', () => {
             console.log('Stream :: close')
-            this.client.end()
+            this.sshClient.end()
           }).on('data', (data) => {
-            console.log('OUTPUT: ' + data)
             this.term.write(data)
           })
-          stream.end('ls -l\nexit\n')
+
+          this.sshStream = stream
         })
       }).connect({
         host: this.session.hostname,
         port: this.session.port,
         username: this.credential.username,
         password: this.credential.password,
-        privateKey: fs.readFileSync('public/ppk/gcp_rsa_vue')
+        privateKey: fs.readFileSync(this.credential.privateKey)
       })
     }
   }
@@ -120,21 +144,8 @@ export default {
 </script>
 
 <style scoped>
-.panel-body-bg {
-  background-color: black;
-  background-image: radial-gradient(
-    rgba(0, 150, 0, 0.75), black 120%
-  );
+.terminal {
+  width: calc(100vw - 30px);
   height: calc(100vh - 60px);
-  color: white;
-  font: 1.3rem Inconsolata, monospace;
-  text-shadow: 0 0 5px #C8C8C8;
 }
-
-::selection {
-  background: #0080FF;
-  text-shadow: none;
-}
-
-
 </style>
