@@ -61,16 +61,17 @@ export default {
       }
     },
     onSaveSession(data) {
-      this.selectedData = null   
+      this.selectedData = null
       const sessionsData = SessionFile.read()
 
       for (let sessions of sessionsData.sessions) {
         if (sessions.isLeaf && sessions.id === data.id) {
-          sessions.name = data.data.sessionName
+          // sessions.name = data.data.sessionName
           sessions.session = {
-            sessionName: data.data.sessionName,
+            // sessionName: data.data.sessionName,
             hostname: data.data.hostname,
             port: data.data.port,
+            connectType: data.data.connectType,
             credentials: data.data.credentials
           }
           break
@@ -105,11 +106,12 @@ export default {
 
       for (let sessions of parent.children) {
         if (sessions.isLeaf && sessions.id === data.id) {
-          sessions.name = data.data.sessionName
+          // sessions.name = data.data.sessionName
           sessions.session = {
-            sessionName: data.data.sessionName,
+            // sessionName: data.data.sessionName,
             hostname: data.data.hostname,
             port: data.data.port,
+            connectType: data.data.connectType,
             credentials: data.data.credentials
           }
           break

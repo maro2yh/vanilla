@@ -22,8 +22,8 @@
             <span class="icon ms-1" slot="addLeafNodeIcon"><span><i class="fa fa-plus" /></span></span>
             <span class="icon ms-1" slot="editNodeIcon"><span><i class="fa fa-edit" /></span></span>
             <span class="icon ms-1" slot="delNodeIcon"><span><i class="fa fa-remove" /></span></span>
-            <span class="icon me-1" slot="leafNodeIcon"><span><i class="fa fa-file" /></span></span>
-            <span class="icon me-1" slot="treeNodeIcon"><span><i class="fa fa-folder" /></span></span>
+            <span class="icon me-1" slot="leafNodeIcon"><span class="text-black-100"><i class="fa fa-file" /></span></span>
+            <span class="icon me-1" slot="treeNodeIcon"><span class="text-yellow"><i class="fa fa-folder" /></span></span>
           </vue-tree-list>
         </div>
       </vue-custom-scrollbar>
@@ -38,7 +38,6 @@
 <script>
 import SessionFile from '@/pages/ssh/SessionFile.js'
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list2'
-// import { Client } from 'ssh2'
 
 export default {
   components: {
@@ -54,6 +53,7 @@ export default {
           name: 'New Site',
           id: 1,
           pid: 0,
+          isLeaf: true,
           dragDisabled: true,
           addTreeNodeDisabled: true,
           addLeafNodeDisabled: true,
@@ -76,7 +76,7 @@ export default {
       this.fileData = SessionFile.read()
       this.fileData.sessions.forEach((session) => {
         const node = new TreeNode(session)
-        
+
         if (!session.isLeaf && session.children.length > 0) {
           this.initChildren(node, session)
         }
@@ -160,7 +160,7 @@ export default {
 
       SessionFile.write(this.fileData)
 
-      this.$nextTick(function() { 
+      this.$nextTick(function() {
         this.onClickTreeNode(params)
       })
     },
@@ -317,29 +317,6 @@ export default {
 
       this.onClickAddNode(params)
     }
-    /*
-    connect() {
-      this.client = new Client()
-      this.client.on('ready', () => {
-        console.log('Client :: ready')
-        this.client.shell((err, stream) => {
-          if (err) throw err
-          stream.on('close', () => {
-            console.log('Stream :: close')
-            this.client.end()
-          }).on('data', (data) => {
-            console.log('OUTPUT: ' + data)
-          })
-          stream.end('ls -l\nexit\n')
-        })
-      }).connect({
-        host: '34.64.111.146',
-        port: 22,
-        username: 'yonghyun01',
-        privateKey: fs.readFileSync('public/ppk/gcp_rsa_vue')
-      })
-    }
-    */
   }
 }
 </script>

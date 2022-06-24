@@ -104,6 +104,9 @@ export default {
       }
 
       return true
+    },
+    reset() {
+      this.value = this.data
     }
   }
 }

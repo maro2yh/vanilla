@@ -5,6 +5,7 @@
         <vue-custom-scrollbar>
           <form class="with-header-with-footer">
             <fieldset>
+              <!--
               <div class="row">
                 <div class="col-md-12">
                   <div class="mb-3">
@@ -20,6 +21,7 @@
                   </div>
                 </div>
               </div>
+              -->
 
               <div class="row">
                 <div class="col-md-9">
@@ -54,6 +56,22 @@
                 </div>
               </div>
 
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label" for="sessionName">Connect Type</label>
+                    <select class="form-select"
+                      v-model="form.connectType"
+                      :disabled="formDisabled"
+                    >
+                      <option value="">Choose...</option>
+                      <option value="ssh">SSH</option>
+                      <option value="sftp">SFTP</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
               <legend class="mb-3">CREDENTIALS</legend>
 
               <div class="row">
@@ -63,12 +81,12 @@
                     <select class="form-select"
                       v-model="form.credentials"
                       :disabled="formDisabled"
+                      @change="onChangeCredenrials"
                     >
                       <option value="">- Create new credentials -</option>
                       <option v-for="credential in credentialsList"
                         :key="credential.id"
                         v-bind:value="credential.id"
-                        @change="onChangeCredenrials"
                       >
                         {{ credential.name }}
                       </option>
@@ -152,15 +170,9 @@
             <div class="text-start">
               <button class="btn btn-primary btn-sm ms-5px"
                 v-if="connectBtnEnabled"
-                @click="onClickSshBtn"
+                @click="onClickConnectBtn"
               >
-                SSH
-              </button>
-              <button class="btn btn-primary btn-sm ms-5px"
-                v-if="connectBtnEnabled"
-                @click="onClickFtpBtn"
-              >
-                SFTP
+                Connect
               </button>
             </div>
           </div>
@@ -210,16 +222,18 @@ export default {
         sessionName: '',
         hostname: '',
         port: '',
+        connectType: 'ssh',
         credentials: '',
         username: '',
         password: '',
         privateKey: '',
         credentialsName: ''
       },
-      formRefs: ['SessionName', 'Hostname', 'Port', 'Username', 'Password', 'CredentialsName'],
+      formRefs: ['Hostname', 'Port', 'Username', 'Password', 'CredentialsName'],
       credentialsFileData: null,
       credentialsList: [],
-      selectedCredential: null
+      selectedCredential: null,
+      originData: null
     }
   },
   created() {
@@ -252,12 +266,14 @@ export default {
         sessionName: '',
         hostname: '',
         port: '',
+        connectType: '',
         credentials: '',
         username: '',
         password: '',
         privateKey: '',
         credentialsName: ''
       }
+      this.originData = Object.assign({}, this.form)
     },
     setSessionData(id, data) {
       this.id = id
@@ -279,6 +295,8 @@ export default {
           this.form.privateKey = this.selectedCredential.privateKey
           this.form.credentialsName =  this.selectedCredential.name
         }
+
+        this.originData = Object.assign({}, this.form)
       } else {
         this.clearFields()
         this.isEdit = false
@@ -288,10 +306,12 @@ export default {
       let valid = true
 
       for (let ref of this.formRefs) {
-        valid = this.$refs[ref].valid()
+        if (this.$refs[ref]) {
+          valid = this.$refs[ref].valid()
 
-        if (!valid) {
-          break
+          if (!valid) {
+            break
+          }
         }
       }
 
@@ -301,13 +321,13 @@ export default {
 
       let credential = null
 
-      if (this.form.credentials) {
+      if (this.form.credentials === '') {
         credential = {
           id: '' + Date.now(),
           name: this.form.credentialsName,
           username: this.$refs['Username'].value,
           password:  this.$refs['Password'].value,
-          privateKey: (document.getElementById('privateKey').files !== null && document.getElementById('privateKey').files.length > 0) ? document.getElementById('privateKey').files[0].path : ''
+          privateKey: (document.getElementById('privateKey').files !== null && document.getElementById('privateKey').files.length > 0) ? document.getElementById('privateKey').files[0].path : this.form.privateKey
         }
 
         this.credentialsFileData.credentials.push(credential)
@@ -321,7 +341,7 @@ export default {
         }
       }
 
-      this.form.sessionName = this.$refs['SessionName'].value
+      // this.form.sessionName = this.$refs['SessionName'].value
       this.form.hostname = this.$refs['Hostname'].value
       this.form.port = this.$refs['Port'].value
       // this.form.username = this.$refs['Username'].value
@@ -329,13 +349,15 @@ export default {
       // this.form.privateKey = (document.getElementById('privateKey').files !== null && document.getElementById('privateKey').files.length > 0) ? document.getElementById('privateKey').files[0].path : ''
       // this.form.credentialsName = (this.$refs['CredentialsName'].value && this.$refs['CredentialsName'].value.trim()) ? this.$refs['CredentialsName'].value : this.form.sessionName
 
-      this.$emit('onSaveSession', {id: this.id, data: this.form})
+      this.$emit('onSaveSession', { id: this.id, data: this.form })
+      this.isEdit = false
     },
     clearFields() {
       this.form = {
         sessionName: '',
         hostname: '',
         port: '',
+        connectType: '',
         credentials: '',
         username: '',
         password: '',
@@ -352,14 +374,30 @@ export default {
           break
         }
       }
+
+      if (this.selectedCredential !== null) {
+        this.form.username = this.selectedCredential.username
+        this.form.password = this.selectedCredential.password
+        this.form.privateKey = this.selectedCredential.privateKey
+        this.form.credentialsName =  this.selectedCredential.name
+      }
     },
     onClickCancelBtn() {
+      this.form = Object.assign({}, this.originData)
 
+      for (let ref of this.formRefs) {
+        if (this.$refs[ref]) {
+          this.$refs[ref].reset()
+        }
+      }
+
+      this.isEdit = false
     },
     onClickEditBtn() {
       this.isEdit = true
     },
-    onClickSshBtn() {
+    onClickConnectBtn() {
+      const routeName = this.form.connectType === 'SSH' ? 'SshTerminal' : 'FtpBrowser'
       const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left
       const dualScreenTop = window.screenTop !== undefined ? window.screenTop : screen.top
       const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width
@@ -370,19 +408,7 @@ export default {
       const mh = height * 0.4
       const left = ((width / 2)) + dualScreenLeft
       const top = ((height / 2)) + dualScreenTop
-      const route = this.$router.resolve({ name: 'SshTerminal', query: { id: this.id }})
-      window.open(route.href, '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, alwaysRaised=on, width=' + width + ', height=' + height + ', top-' + top + ', left=' + left + ', minwidth=' + mw + ', minheight=' + mh).focus()
-    },
-    onClickFtpBtn() {
-      const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left
-      const dualScreenTop = window.screenTop !== undefined ? window.screenTop : screen.top
-      const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width
-      const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height
-      const mw = width * 0.4
-      const mh = height * 0.4
-      const left = ((width / 2)) + dualScreenLeft
-      const top = ((height / 2)) + dualScreenTop
-      const route = this.$router.resolve({ name: 'FtpBrowser', query: { id: this.id }})
+      const route = this.$router.resolve({ name: routeName, query: { id: this.id }})
       window.open(route.href, '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, alwaysRaised=on, width=' + width + ', height=' + height + ', top-' + top + ', left=' + left + ', minwidth=' + mw + ', minheight=' + mh).focus()
     }
   }

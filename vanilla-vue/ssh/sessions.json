@@ -7,48 +7,25 @@
       "children": [
         {
           "id": 1655699136377,
-          "name": "Vanilla",
+          "name": "Vanilla - SSH",
           "isLeaf": true,
           "session": {
-            "sessionName": "Vanilla",
+            "sessionName": "Vanilla - SSH",
             "hostname": "34.64.111.146",
             "port": "22",
+            "connectType": "ssh",
             "credentials": "1655713050546"
           }
         },
         {
-          "id": 1655785842498,
-          "name": "new folder",
-          "isLeaf": false,
-          "children": []
-        },
-        {
-          "id": 1655785855306,
-          "name": "new folder",
-          "isLeaf": false,
-          "children": [
-            {
-              "id": 1655785930652,
-              "name": "new site",
-              "isLeaf": true,
-              "session": {
-                "sessionName": "",
-                "hostname": "",
-                "port": "",
-                "credentials": ""
-              }
-            }
-          ]
-        },
-        {
           "id": 1655785927148,
-          "name": "new site",
+          "name": "Vanilla - SFTP",
           "isLeaf": true,
           "session": {
-            "sessionName": "",
-            "hostname": "",
-            "port": "",
-            "credentials": ""
+            "hostname": "34.64.111.146",
+            "port": "22",
+            "connectType": "sftp",
+            "credentials": "1655713050546"
           }
         }
       ]
