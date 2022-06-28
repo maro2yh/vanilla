@@ -9,7 +9,13 @@
         <FtpBrowserLocal />
       </div>
       <div class="nopane dir">
-        <FtpBrowserRemote />
+        <FtpBrowserRemote
+          ref="FtpBrowserRemote"
+          :id="id"
+          :title="sessionName"
+          :session="session"
+          @onReady="onReadyRemote"
+        />
       </div>
       <div class="nopane bottom">
         <b-tabs nav-wrapper-class="nav nav-tabs" content-class="p-15px bg-white mb-4">
@@ -33,6 +39,7 @@ import { Layout } from 'vue-split-layout'
 import AppOptions from '@/config/AppOptions.vue'
 import FtpBrowserLocal from './FtpBrowserLocal.vue'
 import FtpBrowserRemote from './FtpBrowserRemote.vue'
+import SessionFile from './SessionFile.js'
 
 const layouts = [
   {
@@ -56,6 +63,9 @@ export default {
   },
   data() {
     return {
+      id: '',
+      sessionName: '',
+      session: null,
       state: {
         extraStyle: false,
         edit: false,
@@ -68,8 +78,50 @@ export default {
   created() {
     AppOptions.appHeaderNone = true
     AppOptions.appSidebarNone = true
+    this.id = Number(this.$route.query.id)
+    this.getSession()
   },
-  mounted() {
+  methods: {
+    getSession() {
+      const fileData = SessionFile.read()
+
+      for (let session of fileData.sessions) {
+        if (this.session !== null) {
+          break
+        }
+
+        if (session.isLeaf && session.id === this.id) {
+          this.session = session
+          break
+        } else if (!session.isLeaf) {
+          this.findSession(session)
+        }
+      }
+
+      this.sessionName = this.session.name
+      this.session = this.session.session
+    },
+    findSession(parent) {
+      if (this.session !== null) {
+        return
+      }
+
+      for (let child of parent.children) {
+        if (this.session !== null) {
+          break
+        }
+
+        if (child.isLeaf && child.id === this.id) {
+          this.session = child
+          break
+        } else if (!child.isLeaf) {
+          this.findSession(child)
+        }
+      }
+    },
+    onReadyRemote() {
+      this.$refs.FtpBrowserRemote.connect()
+    }
   }
 }
 </script>

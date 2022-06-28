@@ -27,6 +27,19 @@ var CredentialsFile = {
   },
   write(data) {
     fs.writeFileSync(credentialsFile, JSON.stringify(data, null, 2))
+  },
+  find(id) {
+    const fileData = CredentialsFile.read()
+    let credential = null
+
+    for (let data of fileData.credentials) {
+      if (data.id === id) {
+        credential = data
+        break
+      }
+    }
+
+    return credential
   }
 }
 

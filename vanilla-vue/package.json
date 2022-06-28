@@ -61,6 +61,7 @@
     "vue-select": "^3.16.0",
     "vue-slider-component": "^3.2.15",
     "vue-sparklines": "^0.2.1",
+    "vue-split-layout": "^0.0.16",
     "vue-sweetalert2": "^5.0.2",
     "vue-tree-list2": "^1.5.11",
     "vue2-daterange-picker": "^0.6.7",
