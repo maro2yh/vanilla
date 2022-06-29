@@ -28,6 +28,8 @@ import VueColorpicker from 'vue-pop-colorpicker'
 import VueCustomScrollbar from 'vue-custom-scrollbar'
 import VueApexCharts from 'vue-apexcharts'
 import DateRangePicker from 'vue2-daterange-picker'
+import VueMoment from 'vue-moment'
+import VueColumnsResizable from 'vue-columns-resizable'
 
 // plugins css
 import '@fortawesome/fontawesome-free/css/all.min.css'
@@ -82,6 +84,9 @@ Vue.use(VueInsProgressBar, {
   show: true,
   height: '3px'
 })
+Vue.use(VueMoment)
+Vue.use(VueColumnsResizable)
+
 Vue.component('v-select', VueSelect);
 Vue.component('datepicker', VueDatepicker)
 Vue.component('masked-input', VueMaskedInput)

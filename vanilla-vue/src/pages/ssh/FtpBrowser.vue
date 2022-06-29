@@ -17,19 +17,6 @@
           @onReady="onReadyRemote"
         />
       </div>
-      <div class="nopane bottom">
-        <b-tabs nav-wrapper-class="nav nav-tabs" content-class="p-15px bg-white mb-4">
-          <b-tab active>
-            <template slot="title">
-							<span class="d-sm-none">Tab 1</span>
-							<span class="d-sm-block d-none">Console</span>
-						</template>
-            <div class="bottom-body">
-
-            </div>
-          </b-tab>
-        </b-tabs>
-      </div>
     </Layout>
   </div>
 </template>
@@ -43,15 +30,12 @@ import SessionFile from './SessionFile.js'
 
 const layouts = [
   {
-    dir: 'vertical',
-    first: {
-      dir: 'horizontal',
-      first: 0,
-      second: 1,
-      split: '50%'
-    },
-    second: 2,
-    split: '70%'
+    dir: 'horizontal',
+    first: 0,
+    second: 1,
+    split: '50%'
+    // second: 2,
+    // split: '70%'
   }
 ]
 
@@ -120,7 +104,7 @@ export default {
       }
     },
     onReadyRemote() {
-      this.$refs.FtpBrowserRemote.connect()
+      // this.$refs.FtpBrowserRemote.connect()
     }
   }
 }
@@ -129,18 +113,10 @@ export default {
 <style scoped>
 .browser {
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 40px);
 }
 
 .dir {
-  height: 100%;
-}
-
-.bottom {
-  height: 100%;
-}
-
-.bottom-body {
-  height: calc(100vh - 10px);
+  height: calc(100vh - 1px);
 }
 </style>

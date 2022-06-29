@@ -13,18 +13,16 @@
           <div class="table-responsive">
             <table class="table mb-0">
               <colgroup>
-                <col width="40%" />
-                <col width="10%" />
+                <col width="30%" />
                 <col width="10%" />
                 <col width="20%" />
-                <col width="10%" />
-                <col width="10%" />
+                <col width="20%" />
+                <col width="20%" />
               </colgroup>
               <thead>
                 <tr>
                   <th>파일명</th>
                   <th>크기</th>
-                  <th>파일 유형</th>
                   <th>최종 수정</th>
                   <th>권한</th>
                   <th>소유자/그룹</th>
@@ -72,7 +70,7 @@ export default {
   created() {
     this.panelTitle = 'Remote - ' + this.title
     this.credential = CredentialsFile.find(this.session.credentials)
-    
+
     this.config = {
       host: this.session.hostname,
       port: this.session.port,
@@ -80,7 +78,7 @@ export default {
       password: this.credential.password,
       privateKey: this.credential.privateKey !== '' ? fs.readFileSync(this.credential.privateKey) : ''
     }
-    
+
     this.dirPath = '/home/' + this.config.username
   },
   mounted() {
