@@ -36,6 +36,7 @@
     "ionicons": "^4.2.6",
     "kafkajs": "^1.16.0",
     "less-loader": "^7.3.0",
+    "mariadb": "^3.0.0",
     "moment": "^2.29.1",
     "node-sass": "^6.0.1",
     "sass-loader": "^10.2.1",

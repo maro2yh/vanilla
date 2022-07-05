@@ -1,7 +1,8 @@
 <script>
 import SshSessionManage from '@/pages/ssh/SessionManage.vue'
 import SshTerminal from '@/pages/ssh/Terminal.vue'
-import FtpBrowser from '@/pages/ssh/FtpBrowser'
+import FtpBrowser from '@/pages/ssh/FtpBrowser.vue'
+import DbSessionManage from '@/pages/db/DbSessionManage.vue'
 import DashboardV1 from '../pages/Dashboard-v1.vue'
 import DashboardV2 from '../pages/Dashboard-v2.vue'
 import DashboardV3 from '../pages/Dashboard-v3.vue'
@@ -77,6 +78,7 @@ const routes = [
   { path: '/ssh/sessions', component: SshSessionManage, name: 'SshSessionManage', meta: { title: 'SSH Session Manage' } },
   { path: '/ssh/terminal', component: SshTerminal, name: 'SshTerminal', meta: { title: 'SSH Terminal' } },
   { path: '/ssh/ftp', component: FtpBrowser, name: 'FtpBrowser', meta: { title: 'SFTP Browser' } },
+  { path: '/db/sessions', component: DbSessionManage, name: 'DbSessionManage', meta: { title: 'Database' } },
   // { path: '/ssh/new-session', component: SshNewSession, name: 'SshNewSessiont', meta: { title: 'Create New Session' } },
   { path: '/dashboard/v1', component: DashboardV1 },
   { path: '/dashboard/v2', component: DashboardV2 },

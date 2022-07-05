@@ -5,6 +5,11 @@ const sidebarMenu = [
       { path: '/ssh/sessions', title: 'SSH Session Manage' }
     ]
   },
+  { path: '/db', icon: 'fa fa-sitemap', title: 'DB',
+    children: [
+      { path: '/db/sessions', title: 'DB Session Manage' }
+    ]
+  },
   { path: '/dashboard', icon: 'fa fa-sitemap', title: 'Dashboard',
     children: [
       { path: '/dashboard/v1', title: 'Dashboard v1' },

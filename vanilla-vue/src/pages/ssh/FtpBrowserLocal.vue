@@ -16,9 +16,9 @@
                 <thead v-columns-resizable>
                   <tr>
                     <th width="2%" class="border-top"></th>
-                    <th width="58%" class="border-top">파일명 <span class="fa fa-sort"></span></th>
+                    <th width="68%" class="border-top">파일명 <span class="fa fa-sort"></span></th>
                     <th width="10%" class="text-center border-top border-left">크기 <span class="fa fa-sort"></span></th>
-                    <th width="30%" class="text-center border-top border-left">최종 수정 <span class="fa fa-sort"></span></th>
+                    <th width="20%" class="text-center border-top border-left">최종 수정 <span class="fa fa-sort"></span></th>
                   </tr>
                 </thead>
                 <tbody>
