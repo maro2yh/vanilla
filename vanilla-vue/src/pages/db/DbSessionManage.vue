@@ -18,7 +18,7 @@
               </button>
             </template>
 
-            <NewConnect ref="NewConnect" />
+            <NewSession ref="NewSession" />
           </b-tab>
         </b-tabs>
       </div>
@@ -28,8 +28,7 @@
 
 <script>
 // import pageTitle from '@/components/page-title/PageTitle.vue'
-import NewConnect from '@/pages/db/NewConnect.vue'
-// import { Layout } from 'vue-split-layout'
+import NewSession from '@/pages/db/NewSession.vue'
 
 const layouts = [
   {
@@ -45,7 +44,7 @@ const layouts = [
 export default {
   components: {
     // pageTitle,
-    NewConnect
+    NewSession
     // Layout
   },
   data() {
@@ -59,12 +58,14 @@ export default {
       }
     }
   },
+  created() {
+  },
   methods: {
     tabActivated(newTabIndex, oldTabIndex, event) {
       event.preventDefault()
     },
     onClickNewConnection() {
-      console.log('onClickNewConnection')
+      this.$refs.NewSession.reset()
     }
   }
 }
