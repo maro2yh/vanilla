@@ -275,9 +275,29 @@ export default {
       let connection = null
 
       try {
-        connection = await pool.getConnection()
-        const rows = connection.query('SELECT VERSION()')
-        console.log(rows)
+        pool.getConnection().then(connection => {
+          connection.query('SELECT VERSION()').then((rows) => {
+            console.log(rows)
+            this.$swal({
+              title: '테스트 연결',
+              html: '접속 성공!<br/>DB 버전 : ' + rows[0]['VERSION()'],
+              type: 'success',
+              showCancelButton: false,
+              buttonsStyling: false,
+              confirmButtonText: '확인',
+              cancelButtonText: 'Cancel',
+              confirmButtonClass: 'btn me-5px btn-success',
+              cancelButtonClass: 'btn btn-default',
+              width: '300px'
+            })
+          }).catch(err => {
+            console.log(err)
+            connection.end()
+          })
+        }).catch(err => {
+          //not connected
+          console.log(err)
+        })
       } catch (err) {
         console.log(err)
       } finally {

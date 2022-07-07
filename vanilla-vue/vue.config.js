@@ -12,7 +12,8 @@ module.exports = {
   },
   pluginOptions: {
     electronBuilder: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      externals:['mariadb']
     }
   }
 }

@@ -2,33 +2,26 @@
   <div class="browser">
     <!-- <pageTitle /> -->
 
-    <div class="row">
-      <div class="col-xl-12">
-        <b-tabs nav-wrapper-class="nav nav-tabs"
-          content-class="panel mb-0 p-3 rounded-0"
-          v-on:activate-tab="tabActivated"
-        >
-          <b-tab active>
-            <template slot="title">
-              <button type="button"
-                class="btn btn-link btn-xs"
-                @click="onClickNewConnection"
-              >
-                <span class="d-sm-block d-none"><i class="fa fa-plus"></i></span>
-              </button>
-            </template>
-
-            <NewSession ref="NewSession" />
-          </b-tab>
-        </b-tabs>
+    <Layout
+      :edit="state.edit"
+      :resize="state.resize"
+      :splits="state.splits"
+    >
+      <div class="nopane dir">
+        <Navigator />
       </div>
-    </div>
+      <div class="nopane dir">
+        
+      </div>
+    </Layout>
   </div>
 </template>
 
 <script>
 // import pageTitle from '@/components/page-title/PageTitle.vue'
-import NewSession from '@/pages/db/NewSession.vue'
+// import NewSession from '@/pages/db/NewSession.vue'
+import { Layout } from 'vue-split-layout'
+import Navigator from '@/pages/db/Navigator.vue'
 
 const layouts = [
   {
@@ -44,8 +37,9 @@ const layouts = [
 export default {
   components: {
     // pageTitle,
-    NewSession
-    // Layout
+    // NewSession,
+    Layout,
+    Navigator
   },
   data() {
     return {
@@ -62,6 +56,7 @@ export default {
   },
   methods: {
     tabActivated(newTabIndex, oldTabIndex, event) {
+      console.log(newTabIndex, oldTabIndex)
       event.preventDefault()
     },
     onClickNewConnection() {
@@ -79,5 +74,7 @@ export default {
 
 .dir {
   height: calc(100vh - 1px);
+  border: 1px solid;
+  padding: 5px;
 }
 </style>
