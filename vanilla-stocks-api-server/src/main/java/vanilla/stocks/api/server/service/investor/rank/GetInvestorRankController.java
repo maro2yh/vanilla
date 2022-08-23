@@ -30,5 +30,7 @@ public class GetInvestorRankController {
             map.put("price", VanillaStringUtils.toLong(String.valueOf(sise.get("now"))));
             map.put("changeRate", VanillaStringUtils.toFloat(String.valueOf(sise.get("changeRate"))));
         }
+        
+        return null;
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import vanilla.stocks.api.server.config.SqlMapperWhere;
@@ -26,6 +27,7 @@ public class GetInvestorDailyController {
     private InvestorDailySqlMapper investorDailySqlMapper;
 
     @GetMapping("/{market}/investor/daily")
+    @ResponseBody
     public Object getDaily(@PathVariable String market, @RequestParam(value = "searchFromDate", required = true) String searchFromDate,
             @RequestParam(value = "searchToDate", required = true) String searchToDate) throws IOException {
 

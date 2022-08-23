@@ -13,7 +13,7 @@ import org.apache.ibatis.type.Alias;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import vanilla.stocks.common.util.VanillaStringUtils;
+import vanilla.commons.util.string.VanillaStringUtils;
 
 @Data
 @AllArgsConstructor
