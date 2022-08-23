@@ -1,5 +1,6 @@
 <script>
 const sidebarMenu = [
+  { path: '/finance/home', icon: 'fab fa-simplybuilt', title: '국내증시' },
   { path: '/ssh', icon: 'fa fa-sitemap', title: 'SSH',
     children: [
       { path: '/ssh/sessions', title: 'SSH Session Manage' }

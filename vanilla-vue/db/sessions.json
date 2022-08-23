@@ -1,0 +1,15 @@
+{
+  "sessions": [
+    {
+      "id": "1657178381176",
+      "sessionName": "로컬",
+      "host": "localhost",
+      "port": "3306",
+      "userName": "root",
+      "password": "Dydgus070^",
+      "dbName": "",
+      "maxIdle": "28800",
+      "keepAlive": ""
+    }
+  ]
+}

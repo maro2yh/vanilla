@@ -1,4 +1,5 @@
 <script>
+import FinanceHome from '@/pages/finance/home/Main.vue'
 import SshSessionManage from '@/pages/ssh/SessionManage.vue'
 import SshTerminal from '@/pages/ssh/Terminal.vue'
 import FtpBrowser from '@/pages/ssh/FtpBrowser.vue'
@@ -75,6 +76,7 @@ import HelperCss from '../pages/Helper-css'
 const routes = [
   { path: '*', redirect: '/ssh/sessions' },
   { path: '/', redirect: '/ssh/sessions' },
+  { path: '/finance/home', component: FinanceHome, name: 'FinanceHome', meta: { title: '국내증시 현황' } },
   { path: '/ssh/sessions', component: SshSessionManage, name: 'SshSessionManage', meta: { title: 'SSH Session Manage' } },
   { path: '/ssh/terminal', component: SshTerminal, name: 'SshTerminal', meta: { title: 'SSH Terminal' } },
   { path: '/ssh/ftp', component: FtpBrowser, name: 'FtpBrowser', meta: { title: 'SFTP Browser' } },
