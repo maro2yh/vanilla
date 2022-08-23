@@ -3,7 +3,8 @@ package vanilla.stocks.html.naver;
 public interface URLs {
 
     public static String FINANCE_HOME = "https://finance.naver.com";
-    public static String MARKET_SISE = FINANCE_HOME + "/sise";
+    public static String MARKET_SISE = FINANCE_HOME + "/sise/sise_index.naver?code=%s";
+    public static String MARKET_TIME = FINANCE_HOME + "/sise/sise_index_time.naver?code=%s&thistime=%s&page=%s";
     public static String MARKET_DAILY = FINANCE_HOME + "/sise/sise_index_day.naver?code=%s&page=%s";
     public static String SEARCH = FINANCE_HOME + "/search/searchList.nhn?query=%s";
     public static String UPJONG_LIST = FINANCE_HOME + "/sise/sise_group.nhn?type=upjong";

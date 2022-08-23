@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import vanilla.stocks.common.util.VanillaCalendarUtils;
+import vanilla.commons.util.calendar.VanillaCalendarUtils;
 
 public class InvestorTrendDailyPageTest {
 

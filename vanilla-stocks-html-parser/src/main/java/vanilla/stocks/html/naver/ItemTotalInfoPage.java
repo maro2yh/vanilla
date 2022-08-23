@@ -12,8 +12,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import vanilla.stocks.common.util.VanillaCalendarUtils;
-import vanilla.stocks.common.util.VanillaStringUtils;
+import vanilla.commons.util.calendar.VanillaCalendarUtils;
+import vanilla.commons.util.string.VanillaStringUtils;
 
 public class ItemTotalInfoPage {
 
