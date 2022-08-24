@@ -1,6 +1,6 @@
 <template>
   <div>
-    <panel noHeader="true" noButton="true" id="panel-sessions">
+    <panel noHeader="true" noButton="true">
       <div class="table-responsive" v-if="sise">
         <table class="table table-striped mb-0">
           <thead>
@@ -62,8 +62,7 @@ export default {
     }
   },
   created() {
-    console.log('MarketSise created >> ', this.code)
-    this.getSise()
+    // this.getSise()
   },
   methods: {
     async getSise() {
