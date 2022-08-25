@@ -35,17 +35,17 @@ public class MarketDaily {
     @Column(nullable = false)
     private Float jisu;
     
-    @Column(nullable = false, name = "change_jisu")
-    private Float change;
+    @Column(nullable = false, name = "change_value")
+    private Float changeValue;
     
     @Column(nullable = false, name = "change_rate")
     private Float changeRate;
     
-    @Column(nullable = false)
-    private Long volume;
+    @Column(nullable = false, name = "trade_volume")
+    private Long tradeVolume;
     
-    @Column(nullable = false)
-    private Long amount;
+    @Column(nullable = false, name = "trade_price")
+    private Long tradePrice;
     
     public MarketDaily() {
     }
@@ -54,9 +54,9 @@ public class MarketDaily {
         this.date = String.valueOf(map.get("date"));
         this.name = String.valueOf(map.get("market"));
         this.jisu = VanillaStringUtils.toFloat(String.valueOf(map.get("jisu")));
-        this.change = VanillaStringUtils.toFloat(String.valueOf(map.get("change")));
+        this.changeValue = VanillaStringUtils.toFloat(String.valueOf(map.get("changeValue")));
         this.changeRate = VanillaStringUtils.toFloat(String.valueOf(map.get("changeRate")));
-        this.volume = VanillaStringUtils.toLong(String.valueOf(map.get("volume")));
-        this.amount = VanillaStringUtils.toLong(String.valueOf(map.get("amount")));
+        this.tradeVolume = VanillaStringUtils.toLong(String.valueOf(map.get("tradeVolume")));
+        this.tradePrice = VanillaStringUtils.toLong(String.valueOf(map.get("tradePrice")));
     }
 }

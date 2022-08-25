@@ -63,16 +63,16 @@ public class MarketDailyPage {
                 float change = VanillaStringUtils.toFloat(tdEls.get(2).text());
                 float changeRate = VanillaStringUtils.toFloat(tdEls.get(3).text());
                 long volume = VanillaStringUtils.toLong(tdEls.get(4).text());
-                long amount = VanillaStringUtils.toLong(tdEls.get(5).text());
+                long price = VanillaStringUtils.toLong(tdEls.get(5).text());
 
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("date", date);
                 map.put("market", market.toUpperCase());
                 map.put("jisu", jisu);
-                map.put("change", change);
+                map.put("changeValue", change);
                 map.put("changeRate", changeRate);
-                map.put("volume", volume);
-                map.put("amount", amount);
+                map.put("tradeVolume", volume);
+                map.put("tradePrice", price);
 
                 list.add(map);
             }
