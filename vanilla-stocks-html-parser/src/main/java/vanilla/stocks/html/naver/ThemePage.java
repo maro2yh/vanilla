@@ -47,7 +47,6 @@ public class ThemePage {
                 }
 
                 Element nameEl = trEl.child(0);
-
                 Element nameLinkEl = nameEl.child(0);
                 String name = nameLinkEl.text().trim();
                 String href = nameLinkEl.attr("href");
@@ -57,10 +56,29 @@ public class ThemePage {
                 Element rateEl = trEl.child(1);
                 Float changeRate = VanillaStringUtils.toFloat(rateEl.text().trim());
                 
+                Element last3DaysEl = trEl.child(2);
+                Float last3DaysRate = VanillaStringUtils.toFloat(last3DaysEl.text().trim());
+                
+                Element upCountEl = trEl.child(3);
+                int upCount = VanillaStringUtils.toInteger(upCountEl.text().trim());
+                
+                Element sameCountEl = trEl.child(4);
+                int sameCount = VanillaStringUtils.toInteger(sameCountEl.text().trim());
+                
+                Element downCountEl = trEl.child(5);
+                int downCount = VanillaStringUtils.toInteger(downCountEl.text().trim());
+                
+                int totalCount = (upCount + sameCount + downCount);
+                
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("no", no);
                 map.put("name", name);
                 map.put("changeRate", changeRate);
+                map.put("last3DaysRate", last3DaysRate);
+                map.put("totalCount", totalCount);
+                map.put("upCount", upCount);
+                map.put("sameCount", sameCount);
+                map.put("downCount", downCount);
                 
                 list.add(map);
             }

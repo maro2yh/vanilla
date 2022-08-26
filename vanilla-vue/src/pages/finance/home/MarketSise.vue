@@ -62,13 +62,12 @@ export default {
     }
   },
   created() {
-    // this.getSise()
+    this.getSise()
   },
   methods: {
     async getSise() {
       const apiResult = await getMarketSise(this.code)
       this.sise = apiResult.data
-      console.log(this.sise)
 
       if (Number(this.sise.changeRate) < 0) {
         this.jisuUpDown = 'down'

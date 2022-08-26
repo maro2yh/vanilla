@@ -43,10 +43,26 @@ public class UpjongPage {
             Element changeRateEl = trEl.child(1);
             float changeRate = VanillaStringUtils.toFloat(changeRateEl.text().trim());
             
+            Element totalCountEl = trEl.child(2);
+            int totalCount = VanillaStringUtils.toInteger(totalCountEl.text().trim());
+            
+            Element upCountEl = trEl.child(3);
+            int upCount = VanillaStringUtils.toInteger(upCountEl.text().trim());
+            
+            Element sameCountEl = trEl.child(4);
+            int sameCount = VanillaStringUtils.toInteger(sameCountEl.text().trim());
+            
+            Element downCountEl = trEl.child(5);
+            int downCount = VanillaStringUtils.toInteger(downCountEl.text().trim());
+            
             Map<String, Object> upjong = new HashMap<String, Object>();
             upjong.put("no", no);
             upjong.put("name", name);
             upjong.put("changeRate", changeRate);
+            upjong.put("totalCount", totalCount);
+            upjong.put("upCount", upCount);
+            upjong.put("sameCount", sameCount);
+            upjong.put("downCount", downCount);
             
             upjongList.add(upjong);
         }

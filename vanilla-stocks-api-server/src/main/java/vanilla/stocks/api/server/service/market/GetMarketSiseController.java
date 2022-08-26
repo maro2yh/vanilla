@@ -31,7 +31,7 @@ public class GetMarketSiseController {
             MarketDaily daily = list.get(list.size() - 1);
             String today = VanillaCalendarUtils.now("yyyyMMdd");
             
-            if (today.equals(daily.getDate())) {
+            if (today.equals(daily.getDate()) && VanillaCalendarUtils.nowHours() > 9 && VanillaCalendarUtils.nowHours() < 16) {
                 getMarketDailyService.updateTodayData(code);
             }
         }
